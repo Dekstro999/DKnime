@@ -7,37 +7,33 @@ import threading
 import os
 from animeflv import AnimeFLV
 
-def main():
-    with AnimeFLV() as api:
-        try:
-            serie = input("Serie: ")
-            elementos = api.search(serie)
-            
-            for i, elemento in enumerate(elementos):
-                print(f"{i}) {elemento.title}")
 
-            seleccion = int(input("Selecciona una opcion: "))
-            info = api.get_anime_info(elementos[seleccion].id)
+with AnimeFLV() as api:
+    try:
+        serie = input("Serie: ")
+        elementos = api.search(serie)
+        
+        for i, elemento in enumerate(elementos):
+            print(f"{i}) {elemento.title}")
 
-            info.episodes.reverse()  # Corrige el error de la reversa de episodios
-            for j, episode in enumerate(info.episodes):
-                print(f"{j} | Episodio - {episode.id}")
+        seleccion = int(input("Selecciona una opcion: "))
+        info = api.get_anime_info(elementos[seleccion].id)
 
-            index_Episodio = int(input("Selecciona el Episodio: "))
-            serie = elementos[seleccion].id
-            capitulo = info.episodes[index_Episodio].id 
-            resultados = api.get_links(serie, capitulo)
-            
-            for resultado in resultados:
-                print(f"{resultado.server} - *+*+*+*+*+* {resultado.url}")
+        info.episodes.reverse()  # Corrige el error de la reversa de episodios
+        for j, episode in enumerate(info.episodes):
+            print(f"{j} | Episodio - {episode.id}")
 
-        except Exception as e:
-            print(f"Error: {e}")
+        index_Episodio = int(input("Selecciona el Episodio: "))
+        serie = elementos[seleccion].id
+        capitulo = info.episodes[index_Episodio].id 
+        resultados = api.get_links(serie, capitulo)
+        
+        for resultado in resultados:
+            print(f"{resultado.server} - *+*+*+*+*+* {resultado.url}")
 
-if __name__ == "__main__":
-    main()
+    except Exception as e:
+        print(f"Error: {e}")
 
-root = tk.Tk()
-root.title("piraña")
+
 
 
